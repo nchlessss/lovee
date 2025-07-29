@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Allen My Love</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+      font-family: Arial, sans-serif;
+    }
+
+    a {
+      position: absolute;
+      top: 20px;
+      font-size: 20px;
+      color: #fff;
+      text-decoration: none;
+      border: 2px solid #fff;
+      padding: 10px 20px;
+      border-radius: 10px;
+      transition: 0.3s;
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    .left-button {
+      left: 20px;
+    }
+
+    .right-button {
+      right: 20px;
+    }
+
+    a:hover {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .clicked {
+      animation: clickPop 0.3s ease;
+    }
+
+    @keyframes clickPop {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .heart {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgb(14, 249, 132);
+  transform: rotate(45deg);
+  animation: float 6s linear infinite;
+  box-shadow: 0 0 10px rgb(0, 255, 166), 0 0 20px rgb(0, 255, 191);
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgb(14, 249, 132);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgb(0, 255, 191), 0 0 20px rgb(0, 255, 191);
+}
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% {
+        bottom: -20px;
+        opacity: 0;
+        transform: translateX(0) rotate(45deg);
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        bottom: 110%;
+        transform: translateX(-50px) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    .float-message {
+      position: absolute;
+      font-size: 30px;
+      text-shadow: 0 0 10px #ff0066, 0 0 20px #ff0066;
+      animation: floatMessage 4s linear infinite;
+      pointer-events: none;
+    }
+
+    .love-message {
+      color: #fb0ba7;
+    }
+
+    .miss-message {
+      color: #0bfbd7;
+      text-shadow: 0 0 10px #0bfbd7, 0 0 20px #0bfbd7;
+    }
+
+    @keyframes floatMessage {
+      0% {
+        bottom: 0;
+        opacity: 0;
+        transform: translateX(0);
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        bottom: 100%;
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+    }
+
+   .center-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  color: #f6edf1;
+  text-shadow: 0 0 20px #ff6ea8, 0 0 40px #9a1658;
+  z-index: 20;
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+  text-align: center; /* 👈 ADD THIS */
+}
+
+    .center-message.visible {
+      opacity: 1;
+    }
+
+    
+    @keyframes bounce {
+      0% { transform: translate(-50%, -50%) scale(0.8); }
+      50% { transform: translate(-50%, -50%) scale(1.2); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Buttons -->
+<a href="#" class="left-button" onclick="showLove(this)">You pindot this oh</a>
+<a href="#" class="right-button" onclick="showPatience(this)">You pindot this too</a>
+
+<!-- Center message -->
+<div id="centerMessage" class="center-message"></div>
+
+<script>
+  function showLove(btn) {
+    animateButton(btn);
+    createFloatingMessages("ILOVEYOU", "love-message");
+    updateCenter("ILOVEYOU ALIEN");
+  }
+
+  function showPatience(btn) {
+    animateButton(btn);
+    createFloatingMessages("1 Corinthians13:4 ", "miss-message");
+    updateCenter("Love is PARIENCE, love is KIND. It does not ENVY, it does not BOAST, it is not PROUD.");
+  }
+
+  function animateButton(button) {
+    button.classList.add("clicked");
+    setTimeout(() => {
+      button.classList.remove("clicked");
+    }, 300);
+  }
+
+  function updateCenter(text) {
+    const center = document.getElementById("centerMessage");
+    center.textContent = text;
+    center.classList.add("visible");
+
+    clearTimeout(center.hideTimeout);
+    center.hideTimeout = setTimeout(() => {
+      center.classList.remove("visible");
+    }, 3000);
+  }
+
+  function createFloatingMessages(message, className) {
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        const msg = document.createElement("div");
+        msg.className = `float-message ${className}`;
+        msg.textContent = message;
+        msg.style.left = Math.random() * window.innerWidth + "px";
+        msg.style.bottom = "0px";
+        document.body.appendChild(msg);
+        setTimeout(() => msg.remove(), 9000);
+      }, i * 600);
+    }
+  }
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+  }
+
+  setInterval(createHeart, 300);
+</script>
+
+</body>
+</html>
